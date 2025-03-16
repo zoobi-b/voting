@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>전자투표 시스템</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, select, button { margin-bottom: 10px; width: 100%; padding: 10px; }
+    #voteForm { max-width: 400px; margin: auto; }
+    #successMessage { display: none; color: green; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>전자투표 시스템</h1>
+  <div id="voteForm">
+    <input type="text" id="studentId" placeholder="학번" required>
+    <input type="text" id="studentName" placeholder="이름" required>
+    <input type="text" id="grade" placeholder="학년" required>
+
+    <select id="candidate" required>
+      <option value="">후보 선택</option>
+      <option value="후보 1">후보 1</option>
+      <option value="후보 2">후보 2</option>
+      <option value="후보 3">후보 3</option>
+    </select>
+
+    <button onclick="submitVote()">투표하기</button>
+    <p id="successMessage">투표가 완료되었습니다!</p>
+  </div>
+
+  <script>
+    async function submitVote() {
+      const studentId = document.getElementById('studentId').value;
+      const studentName = document.getElementById('studentName').value;
+      const grade = document.getElementById('grade').value;
+      const candidate = document.getElementById('candidate').value;
+
+      if (!studentId || !studentName || !grade || !candidate) {
+        alert("모든 항목을 입력해주세요.");
+        return;
+      }
+
+      const response = await fetch('https://script.google.com/macros/s/your-google-script-url/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ studentId, studentName, grade, candidate })
+      });
+
+      document.getElementById('voteForm').reset();
+      document.getElementById('successMessage').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
